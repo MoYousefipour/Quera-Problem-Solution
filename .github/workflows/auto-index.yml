@@ -8,7 +8,6 @@ on:
     branches: [ main ]
     paths:
       - 'Competition/**'
-      - 'Olympiad/**'
       - 'Technology/**'
       - 'University/**'
 
@@ -29,7 +28,7 @@ jobs:
 
       - name: Run makeMD.py inside each folder
         run: |
-          for d in Competition Olympiad Technology University; do
+          for d in Competition Technology University; do
             echo "Running makeMD.py inside $d"
             (cd $d && python makeMD.py)
           done
