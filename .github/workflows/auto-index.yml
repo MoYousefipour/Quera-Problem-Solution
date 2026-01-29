@@ -1,35 +1,51 @@
-name: Auto Generate Index
+name: Auto Run makeMD in Folders
+
 on:
   push:
     branches: [ main ]
     paths:
-      - 'data/**'
+      - 'folderA/**'
+      - 'folderB/**'
+      - 'folderC/**'
+      - 'folderD/**'
+
+  workflow_dispatch:
 
 jobs:
-  build:
+  run-scripts:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Set up Python
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: Install dependencies (if you have any)
-        run: |
-          pip install -r requirements.txt || true
+      - name: Run makeMD in folderA
+        run: python folderA/makeMD.py
 
-      - name: Run index generator
-        run: |
-          python generate_index.py
+      - name: Run makeMD in folderB
+        run: python folderB/makeMD.py
 
-      - name: Commit and push changes if index updated
+      - name: Run makeMD in folderC
+        run: python folderC/makeMD.py
+
+      - name: Run makeMD in folderD
+        run: python folderD/makeMD.py
+
+      - name: Commit changes if any
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
+
           git add .
-          git diff --quiet && git diff --staged --quiet || git commit -m "Auto update index"
-          git push
+
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Auto update markdown indexes"
+            git push
+          fi
