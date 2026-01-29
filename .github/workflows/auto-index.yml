@@ -1,0 +1,35 @@
+name: Auto Generate Index
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'data/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies (if you have any)
+        run: |
+          pip install -r requirements.txt || true
+
+      - name: Run index generator
+        run: |
+          python generate_index.py
+
+      - name: Commit and push changes if index updated
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add .
+          git diff --quiet && git diff --staged --quiet || git commit -m "Auto update index"
+          git push
