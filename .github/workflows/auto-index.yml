@@ -4,10 +4,10 @@ on:
   push:
     branches: [ main ]
     paths:
-      - 'folderA/**'
-      - 'folderB/**'
-      - 'folderC/**'
-      - 'folderD/**'
+      - 'Competition/**'
+      - 'Olympiad/**'
+      - 'Technology/**'
+      - 'University/**'
 
   workflow_dispatch:
 
@@ -25,16 +25,16 @@ jobs:
           python-version: '3.11'
 
       - name: Run makeMD in folderA
-        run: python folderA/makeMD.py
+        run: python Competition/makeMD.py
 
       - name: Run makeMD in folderB
-        run: python folderB/makeMD.py
+        run: python Olympiad/makeMD.py
 
       - name: Run makeMD in folderC
-        run: python folderC/makeMD.py
+        run: python Technology/makeMD.py
 
       - name: Run makeMD in folderD
-        run: python folderD/makeMD.py
+        run: python University/makeMD.py
 
       - name: Commit changes if any
         run: |
