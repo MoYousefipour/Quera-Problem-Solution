@@ -1,5 +1,8 @@
 name: Auto Run makeMD in Folders
 
+permissions:
+  contents: write
+
 on:
   push:
     branches: [ main ]
@@ -16,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup Python
@@ -24,19 +27,14 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Run makeMD in folderA
-        run: python Competition/makeMD.py
+      - name: Run makeMD.py inside each folder
+        run: |
+          for d in Competition Olympiad Technology University; do
+            echo "Running makeMD.py inside $d"
+            (cd $d && python makeMD.py)
+          done
 
-      - name: Run makeMD in folderB
-        run: python Olympiad/makeMD.py
-
-      - name: Run makeMD in folderC
-        run: python Technology/makeMD.py
-
-      - name: Run makeMD in folderD
-        run: python University/makeMD.py
-
-      - name: Commit changes if any
+      - name: Commit and push changes if any
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
